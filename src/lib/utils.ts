@@ -60,3 +60,51 @@ export const flyAndScale = (
 		easing: cubicOut
 	};
 };
+
+export const WindowTitles: {[key: string]: string} = {
+	'': '',
+	'/v1/orders': 'Pedidos',
+	'/v1/storage': 'Estoque',
+	'/v1/reports': 'Relatórios',
+	'/v1/settings': 'Configurações',
+}
+
+export function toBRLCurrency(value: number) {
+	return new Intl.NumberFormat("pt-BR", {
+		style: "currency",
+		currency: "BRL",
+		minimumFractionDigits: 2,
+	}).format(value);
+}
+
+export function getCurrentTime() {
+	return new Intl.DateTimeFormat("en-US", {
+		timeZone: "America/Sao_Paulo",
+		hour12: false,
+		timeStyle: "medium",
+	}).format(new Date());
+}
+
+export function formatHHMMSS(startTime: string, endTime?: string) {
+	let relativeTime;
+
+	if (endTime) {
+		(relativeTime = new Date(`2024-01-01T${ endTime }`)), 1000;
+	} else {
+		(relativeTime = new Date(`2024-01-01T${ getCurrentTime() }`)), 1000;
+	}
+
+
+	let seconds = ((relativeTime as any) - (new Date(`2024-01-01T${startTime}`) as any)) / 1000;
+	// console.log(startTime, seconds);
+	
+	const hours = Math.floor(seconds / 3600).toString(); // Get the number of whole hours
+	
+	// In case the order time is later than possible, inverts only the hours, and not minutes and seconds.
+	// Leaving so, makes possible for the client to "book" or "schedule" a order later in the day.
+	if (seconds < 0) { seconds *= -1 }
+
+	const minutes = Math.floor((seconds % 3600) / 60).toString(); // Get the remaining minutes
+	const remainingSeconds = (seconds % 60).toString(); // Get the remaining seconds
+	return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}:${remainingSeconds.padStart(2, "0")}`;
+}

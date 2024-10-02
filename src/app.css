@@ -1,4 +1,6 @@
 @import url(https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css);
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -26,8 +28,8 @@
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
  
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
+    --accent: 120 17% 44%;
+    --accent-foreground: 0 0% 98%;
  
     --destructive: 0 72.2% 50.6%;
     --destructive-foreground: 0 0% 98%;
@@ -59,7 +61,7 @@
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
  
-    --accent: 0 0% 14.9%;
+    --accent: 120 17% 44%;
     --accent-foreground: 0 0% 98%;
  
     --destructive: 0 62.8% 30.6%;
@@ -79,6 +81,39 @@
   }
 
   body {
-    @apply dark text-foreground h-full w-full;
+    @apply flex flex-col bg-neutral-200 dark:bg-neutral-950 text-foreground h-full w-full p-4;
   }
+}
+
+@layer utilities {
+  .dot {
+    --dot-size: 8px;
+    @apply 
+      before:content-[''] before:absolute before:w-[var(--dot-size)] before:h-[var(--dot-size)] before:rounded-full before:bg-accent before:-top-[calc(var(--dot-size)/2)] before:-right-[calc(var(--dot-size)/2)]
+      after:content-[''] after:absolute after:w-[var(--dot-size)] after:h-[var(--dot-size)] after:rounded-full after:bg-accent after:-top-[calc(var(--dot-size)/2)] after:-right-[calc(var(--dot-size)/2)] after:animate-ping;
+  }
+
+  .no_dot {
+    @apply before:opacity-0 after:opacity-0;
+  }
+
+  .status_tag {
+    @apply flex uppercase text-sm/none h-8 w-fit border-none rounded-none rounded-br-md tracking-wider text-neutral-50;
+  }
+
+ .tag_colors {
+    @apply tag_entregue tag_preparando tag_cancelado;
+ }
+
+ .tag_entregue {
+	@apply data-[status=entregue]:bg-green-500 data-[status=entregue]:data-[highlighted]:bg-green-700;
+ }
+
+ .tag_preparando {
+	@apply data-[status=preparando]:bg-blue-500 data-[status=preparando]:data-[highlighted]:bg-blue-700;
+ }
+
+ .tag_cancelado {
+	@apply data-[status=cancelado]:bg-red-500 data-[status=cancelado]:data-[highlighted]:bg-red-700;
+ }
 }
